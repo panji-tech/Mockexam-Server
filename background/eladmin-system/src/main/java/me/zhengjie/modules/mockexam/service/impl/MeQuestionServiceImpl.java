@@ -166,7 +166,11 @@ public class MeQuestionServiceImpl extends ServiceImpl<MeQuestionMapper, MeQuest
      */
     @Override
     public MeQuestion selectById(Long id) {
-        return meQuestionMapper.selectById(id);
+        MeQuestion meQuestion = meQuestionMapper.selectById(id);
+        if (meQuestion.getPic()!=null && meQuestion.getTargetPic()==null){
+            meQuestion.setTargetPic(meQuestion.getPic());
+        }
+        return meQuestion;
     }
 
     /**

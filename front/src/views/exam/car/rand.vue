@@ -151,6 +151,7 @@ export default {
         answer: null,
         questionExplain: null,
         targetPic: null,
+        pic: null,
         chooseAnswer: null,
         isChooseOver: false,
         successShow: false,
