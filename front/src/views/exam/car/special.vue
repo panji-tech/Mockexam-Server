@@ -64,7 +64,8 @@
             />
             <br>
             <h2>  {{ index }}/{{ questionCount }} {{ questionForm.question }}</h2> <br>
-            <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="this.serverIp+questionForm.targetPic">
+            <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="questionForm.targetPic">
+            <img v-if="questionForm.pic" style="width: 180px;height: 180px; " :src="questionForm.pic">
             <br>
 
             <el-radio-group
@@ -268,7 +269,6 @@ export default {
       this.successShow = this.questionList[this.index - 1 ].successShow
       this.errorShow = this.questionList[this.index - 1 ].errorShow
       this.questionForm = this.questionList[this.index - 1]
-
     },
     changeOption() {
       var index = this.index - 1

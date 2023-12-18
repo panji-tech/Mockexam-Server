@@ -1,4 +1,4 @@
-package me.zhengjie.modules.mockexam.utils;
+package me.zhengjie.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemUtil {
 
-    @Value("${fdfs.localPath.windows}")
+    @Value("${file.upload.windows.dir}")
     private String windowsPath;
 
 
-    @Value("${fdfs.localPath.linux}")
+    @Value("${file.upload.linux.dir}")
     private String linuxPath;
+
+    @Value("${file.upload.mac.dir}")
+    private String macPath;
 
 
     private final String LINUX = "linux";
@@ -43,6 +46,8 @@ public class SystemUtil {
             s = linuxPath;
         } else if (environment.contains(WINDOWS)) {
             s = windowsPath;
+        } else {
+            s = macPath;
         }
         return s;
     }

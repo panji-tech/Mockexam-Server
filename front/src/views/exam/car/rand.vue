@@ -50,7 +50,8 @@
           />
           <br>
           <h2> {{ index }}/{{ questionCount }} {{ questionForm.question }} </h2><br>
-          <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="this.serverIp+questionForm.targetPic">
+          <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="questionForm.targetPic">
+          <img v-if="questionForm.pic" style="width: 180px;height: 180px; " :src="questionForm.pic">
           <br>
 
           <el-radio-group
@@ -63,24 +64,35 @@
 
             <el-radio label="1" border>A:{{ questionForm.option1 }}</el-radio>
             <br><br><br>
-            <el-radio label="2" border>B:{{ questionForm.option2 }}</el-radio><br><br><br>
-            <el-radio v-if="questionForm.option3" label="3" border>C:{{ questionForm.option3 }}</el-radio><br><br><br>
-            <el-radio v-if="questionForm.option4" label="4" border>D:{{ questionForm.option4 }}</el-radio><br><br><br>
-          </el-radio-group><br> <br>
+            <el-radio label="2" border>B:{{ questionForm.option2 }}</el-radio>
+            <br><br><br>
+            <el-radio v-if="questionForm.option3" label="3" border>C:{{ questionForm.option3 }}</el-radio>
+            <br><br><br>
+            <el-radio v-if="questionForm.option4" label="4" border>D:{{ questionForm.option4 }}</el-radio>
+            <br><br><br>
+          </el-radio-group>
+          <br> <br>
           <el-tag v-if="questionForm.isChooseOver" size="medium">
-            {{ questionForm. questionExplain }}
-          </el-tag><br> <br>
+            {{ questionForm.questionExplain }}
+          </el-tag>
+          <br> <br>
           <el-button type="primary" @click="lastQuestion">上一题</el-button>
-          <el-button type="primary" @click="nextQuestion">下一题</el-button><br><br>
+          <el-button type="primary" @click="nextQuestion">下一题</el-button>
+          <br><br>
           <el-link v-if="questionForm.errorShow" type="danger"> 正确答案:
-            {{ questionForm.answer=='4'?('D'):( questionForm.answer=='3'?('C'):( questionForm.answer=='2'?('B'):(questionForm.answer=='1'?('A'):'')) ) }}</el-link><br><br>
+            {{
+              questionForm.answer == '4' ? ('D') : (questionForm.answer == '3' ? ('C') : (questionForm.answer == '2' ? ('B') : (questionForm.answer == '1' ? ('A') : '')))
+            }}
+          </el-link>
+          <br><br>
           <el-link type="success">答对:{{ successCount }}道</el-link>
           <el-link type="danger"> 答错:{{ wrongCount }}道</el-link>
           <el-link type="info">正确率:{{ successPer }}</el-link>
         </div>
       </el-col>
     </el-row>
-  </div></template>
+  </div>
+</template>
 
 <script>
 import crudQuestion from '@/api/system/question'
@@ -214,7 +226,8 @@ export default {
           this.questionCount = res.totalElements
           this.selectQuetsionById(this.questionIndexList[this.index])
         })
-      }, deep: true }
+      }, deep: true
+    }
   },
   created() {
     var params = { subjectType: this.query.subjectType, carType: 1, isRandom: 1 }
@@ -233,8 +246,8 @@ export default {
   methods: {
 
     nextQuestion() {
-      var id = this.questionIndexList[ this.index]
-      var data = this.questionList[this.index ]
+      var id = this.questionIndexList[this.index]
+      var data = this.questionList[this.index]
       if (data === undefined) {
         this.selectQuetsionById(id)
       } else {
@@ -248,8 +261,8 @@ export default {
     lastQuestion() {
       this.index = this.index - 1
       this.isChooseOver = this.questionList[this.index - 1].isChooseOver
-      this.successShow = this.questionList[this.index - 1 ].successShow
-      this.errorShow = this.questionList[this.index - 1 ].errorShow
+      this.successShow = this.questionList[this.index - 1].successShow
+      this.errorShow = this.questionList[this.index - 1].errorShow
       this.questionForm = this.questionList[this.index - 1]
     },
     changeOption() {
@@ -319,13 +332,14 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-    ::v-deep .vue-treeselect__control, ::v-deep .vue-treeselect__placeholder, ::v-deep .vue-treeselect__single-value {
-        height: 30px;
-        line-height: 30px;
-    }
-    .avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-    }
+::v-deep .vue-treeselect__control, ::v-deep .vue-treeselect__placeholder, ::v-deep .vue-treeselect__single-value {
+  height: 30px;
+  line-height: 30px;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
 </style>

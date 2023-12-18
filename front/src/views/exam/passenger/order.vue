@@ -50,7 +50,8 @@
           />
           <br>
           <h2>{{ index }}/{{ questionCount }} {{ questionForm.question }}</h2> <br>
-          <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="this.serverIp+questionForm.targetPic">
+          <img v-if="questionForm.targetPic" style="width: 180px;height: 180px; " :src="questionForm.targetPic">
+          <img v-if="questionForm.pic" style="width: 180px;height: 180px; " :src="questionForm.pic">
           <br>
 
           <el-radio-group

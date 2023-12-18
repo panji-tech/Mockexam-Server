@@ -137,7 +137,7 @@
           <el-table-column :selectable="checkboxT" type="selection" width="55" />
           <el-table-column prop="targetPic" label="图片标识">
             <template slot-scope="scope">
-              <img v-if="scope.row.targetPic" :src="'http://127.0.0.1/'+scope.row.targetPic" style="width: 100px;height: 100px">
+              <img v-if="scope.row.targetPic" :src="this.serverIp+scope.row.targetPic" style="width: 100px;height: 100px">
             </template>
           </el-table-column>
           <el-table-column :show-overflow-tooltip="false" prop="question" label="问题" />

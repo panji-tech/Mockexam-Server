@@ -174,7 +174,7 @@ public interface MeQuestionService extends IService<MeQuestion> {
      * @Author: Mingxuan_X
      * @Date: 2021/4/16
      */
-    Object updateQuestionPic(MultipartFile file);
+    String updateQuestionPic(MultipartFile file);
 
     /**
      * 返回用户推荐的题

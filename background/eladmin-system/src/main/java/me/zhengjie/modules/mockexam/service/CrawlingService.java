@@ -2,7 +2,6 @@ package me.zhengjie.modules.mockexam.service;
 
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
@@ -14,11 +13,11 @@ import me.zhengjie.modules.mockexam.constant.enums.QuestionTypeEnum;
 import me.zhengjie.modules.mockexam.constant.enums.SubjectTypeEnum;
 import me.zhengjie.modules.mockexam.pojo.MeQuestion;
 import me.zhengjie.modules.mockexam.utils.DockingFileUtils;
-import me.zhengjie.modules.mockexam.utils.FastDFSUtil;
+import me.zhengjie.modules.mockexam.utils.FileUploadUtil;
 import me.zhengjie.modules.mockexam.utils.FileUtil;
 import me.zhengjie.modules.mockexam.utils.HttpUtil;
 import me.zhengjie.modules.mockexam.utils.JsonUtil;
-import me.zhengjie.modules.mockexam.utils.SystemUtil;
+import me.zhengjie.utils.SystemUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -55,7 +53,7 @@ public class CrawlingService {
     private SystemUtil systemUtil;
 
     @Autowired
-    private FastDFSUtil fastDFSUtil;
+    private FileUploadUtil fileUploadUtil;
 
 
     /**
@@ -106,7 +104,7 @@ public class CrawlingService {
             if (download) {
                 //(2)上转到fastdfs服务器
                 try {
-                    StorePath path = fastDFSUtil.uploadByLocalFile(localPath);
+                    StorePath path = fileUploadUtil.uploadByLocalFile(localPath);
                     obj.setTargetPic(path.getPath());
                 } catch (IOException e) {
                     log.error("fastdfs上传时出错!", e);

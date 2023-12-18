@@ -17,11 +17,11 @@ package me.zhengjie.modules.system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.zhengjie.config.FileProperties;
+import me.zhengjie.exception.EntityExistException;
+import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.security.service.OnlineUserService;
 import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.User;
-import me.zhengjie.exception.EntityExistException;
-import me.zhengjie.exception.EntityNotFoundException;
 import me.zhengjie.modules.system.repository.UserRepository;
 import me.zhengjie.modules.system.service.UserService;
 import me.zhengjie.modules.system.service.dto.JobSmallDto;
@@ -37,8 +37,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotBlank;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
             redisUtils.del(CacheKey.ROLE_AUTH + resources.getId());
         }
         // 如果用户被禁用，则清除用户登录信息
-        if(!resources.getEnabled()){
+        if (!resources.getEnabled()) {
             onlineUserService.kickOutForUsername(resources.getUsername());
         }
         user.setUsername(resources.getUsername());
@@ -190,10 +190,8 @@ public class UserServiceImpl implements UserService {
         user.setAvatarPath(Objects.requireNonNull(file).getPath());
         user.setAvatarName(file.getName());
         userRepository.save(user);
-        if (StringUtils.isNotBlank(oldPath)) {
-            FileUtil.del(oldPath);
-        }
-        @NotBlank String username = user.getUsername();
+
+        String username = user.getUsername();
         flushCache(username);
         return new HashMap<String, String>(1) {{
             put("avatar", file.getName());

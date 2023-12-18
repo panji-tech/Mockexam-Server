@@ -12,13 +12,14 @@ spring:
     redis:
       repositories:
         enabled: false
-fdfs:
-  connect-timeout: 601
-  so-timeout: 1501
-  tracker-list[0]: 127.0.0.1:22122
-  localPath:
-    windows: D:/upload/
-    linux: /home/mockExam/images/
+file:
+  upload:
+    windows:
+      dir: D:/mockExam/images/ # windows 文件上传目录
+    linux:
+      dir: /temp/mockExam/images/ # linus或者macos 文件上传目录
+    mac:
+      dir: ~/mockExam/images/
 #第三方平台试题接口
 crawling:
   url: http://v.juhe.cn/jztk/query
@@ -68,9 +69,6 @@ mybatis-plus:
     jdbc-type-for-null: 'null'
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
 
-
-
-
   #配置 Jpa
   jpa:
     properties:
@@ -78,8 +76,6 @@ mybatis-plus:
         ddl-auto: none
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
-
-
 
 task:
   pool:

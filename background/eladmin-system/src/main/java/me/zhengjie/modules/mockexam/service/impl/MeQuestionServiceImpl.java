@@ -7,33 +7,26 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.modules.mockexam.constant.CommonConstant;
 import me.zhengjie.modules.mockexam.constant.enums.AnswerTypeEnum;
 import me.zhengjie.modules.mockexam.constant.enums.ChooseAnswerTypeEnum;
-import me.zhengjie.modules.mockexam.constant.enums.FavoritesTypeEnum;
 import me.zhengjie.modules.mockexam.mapper.MeQuestionMapper;
-import me.zhengjie.modules.mockexam.pojo.MeFavorites;
 import me.zhengjie.modules.mockexam.pojo.MeQuestion;
 import me.zhengjie.modules.mockexam.pojo.MeWrongQuestion;
 import me.zhengjie.modules.mockexam.service.MeFavoritesService;
 import me.zhengjie.modules.mockexam.service.MeQuestionService;
 import me.zhengjie.modules.mockexam.service.MeWrongQuestionService;
-import me.zhengjie.modules.mockexam.utils.FastDFSUtil;
-import me.zhengjie.modules.mockexam.utils.FileUtil;
+import me.zhengjie.utils.LocalUploadUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +49,7 @@ public class MeQuestionServiceImpl extends ServiceImpl<MeQuestionMapper, MeQuest
     private MeWrongQuestionService meWrongQuestionService;
 
     @Resource
-    private FastDFSUtil fastDFSUtil;
+    private LocalUploadUtil localUploadUtil;
 
     @Resource
     private MeFavoritesService meFavoritesService;
@@ -167,9 +160,11 @@ public class MeQuestionServiceImpl extends ServiceImpl<MeQuestionMapper, MeQuest
     @Override
     public MeQuestion selectById(Long id) {
         MeQuestion meQuestion = meQuestionMapper.selectById(id);
-        if (meQuestion.getPic()!=null && meQuestion.getTargetPic()==null){
-            meQuestion.setTargetPic(meQuestion.getPic());
-        }
+//        if (meQuestion.getPic()!=null && meQuestion.getTargetPic()==null){
+//            meQuestion.setTargetPic(meQuestion.getPic());
+//        }
+        //pic 远程图片
+        // targetPic 本地图片
         return meQuestion;
     }
 
@@ -326,20 +321,12 @@ public class MeQuestionServiceImpl extends ServiceImpl<MeQuestionMapper, MeQuest
      * @Date: 2021/4/16
      */
     @Override
-    public Object updateQuestionPic(MultipartFile file) {
-
-        try {
-            StorePath path = fastDFSUtil.upload(file);
-            return path.getPath();
-        } catch (IOException e) {
-            log.error("上传图片到FastDFS服务器错误!", e);
-        }
-        return null;
+    public String updateQuestionPic(MultipartFile file) {
+        return localUploadUtil.upload(file);
     }
 
     /**
      * 返回用户推荐的题
-     *
      *
      * @return:
      * @Author: Mingxuan_X
