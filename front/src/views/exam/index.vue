@@ -215,6 +215,10 @@ export default {
         add: ['admin1', 'user:add'],
         edit: ['admin1', 'user:edit'],
         del: ['admi1n', 'user:del']
+      },
+      query: {
+        subjectType: 1,
+        carType: 1
       }
 
     }
