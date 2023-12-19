@@ -143,7 +143,7 @@ export default {
   dicts: ['user_status'],
   data() {
     return {
-      endTime: '2021-04-18 23:59:00',
+      endTime: '2030-04-18 23:59:00',
       countTime: {
         minute: 11,
         second: 11
@@ -298,7 +298,7 @@ export default {
         this.questionIndexList = res.content
         this.questionCount = res.totalElements
         this.selectQuetsionById(this.questionIndexList[this.index])
-        this.endTime = moment(new Date()).add(1, 'minutes').format('YYYY-MM-DD HH:mm:ss')
+        this.endTime = moment(new Date()).add(45, 'minutes').format('YYYY-MM-DD HH:mm:ss')
         // eslint-disable-next-line eqeqeq
         this.$refs.child.againInit(this.endTime)
       })

@@ -2,10 +2,9 @@ package me.zhengjie.modules.mockexam.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import me.zhengjie.modules.mockexam.constant.CommonConstant;
 import me.zhengjie.modules.mockexam.constant.enums.MessageTypeEnum;
 import me.zhengjie.modules.mockexam.mapper.MeQuestionMapper;
 import me.zhengjie.modules.mockexam.mapper.MeWrongQuestionMapper;
@@ -59,6 +58,9 @@ public class MeWrongQuestionServiceImpl extends ServiceImpl<MeWrongQuestionMappe
     public List<MeQuestion> selectByPage(MeWrongQuestion.Query query) {
         Map<String, Object> map = BeanUtil.beanToMap(query);
         String strs = meWrongQuestionMapper.selectByPage(map);
+        if (StringUtils.isBlank(strs)) {
+            return Lists.newArrayList();
+        }
         Long[] ids = Arrays.stream(strs.split(",")).map(s -> Long.parseLong(s.trim())).toArray(Long[]::new);
         //解决错题重复问题
         LambdaQueryWrapper<MeQuestion> wrapper = new LambdaQueryWrapper<MeQuestion>();
@@ -90,6 +92,9 @@ public class MeWrongQuestionServiceImpl extends ServiceImpl<MeWrongQuestionMappe
     public Integer selectCount(MeWrongQuestion.Query query) {
         Map<String, Object> map = BeanUtil.beanToMap(query);
         String strs = meWrongQuestionMapper.selectByPage(map);
+        if (StringUtils.isBlank(strs)) {
+            return 0;
+        }
         Long[] ids = Arrays.stream(strs.split(",")).map(s -> Long.parseLong(s.trim())).distinct().toArray(Long[]::new);
         return ids.length;
     }
